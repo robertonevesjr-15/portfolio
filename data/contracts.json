@@ -1,0 +1,153 @@
+{
+  "tickers": {
+    "AAPL": {
+      "contract_id": 265598,
+      "exchange": "SMART",
+      "name": "Apple Inc"
+    },
+    "AMZN": {
+      "contract_id": 3691937,
+      "exchange": "SMART",
+      "name": "Amazon.com Inc"
+    },
+    "AVDV": {
+      "contract_id": 385087093,
+      "exchange": "SMART",
+      "name": "Avantis International Small Cap Value ETF"
+    },
+    "AVUV": {
+      "contract_id": 385087149,
+      "exchange": "SMART",
+      "name": "Avantis US Small Cap Value ETF"
+    },
+    "COPX": {
+      "contract_id": 211651700,
+      "exchange": "SMART",
+      "name": "Global X Copper Miners ETF"
+    },
+    "CRWV": {
+      "contract_id": 771759702,
+      "exchange": "SMART",
+      "name": "CoreWeave Inc Class A"
+    },
+    "DGRO": {
+      "contract_id": 155518915,
+      "exchange": "SMART",
+      "name": "iShares Core Dividend Growth ETF"
+    },
+    "FRANKLIN": {
+      "contract_id": 340336776,
+      "exchange": "FUNDSERV",
+      "name": "Franklin U.S. Dollar Short-Term Money Market A (USD) Inc"
+    },
+    "IAU": {
+      "contract_id": 474829650,
+      "exchange": "SMART",
+      "name": "iShares Gold Trust"
+    },
+    "IXC": {
+      "contract_id": 13832153,
+      "exchange": "SMART",
+      "name": "iShares Global Energy ETF"
+    },
+    "MSTY": {
+      "contract_id": 835599787,
+      "exchange": "SMART",
+      "name": "YieldMax MSTR Option Income Strategy ETF"
+    },
+    "MTC": {
+      "contract_id": 748616341,
+      "exchange": "SMART",
+      "name": "MMTec Inc"
+    },
+    "MU": {
+      "contract_id": 9939,
+      "exchange": "SMART",
+      "name": "Micron Technology Inc"
+    },
+    "NNDM": {
+      "contract_id": 388550694,
+      "exchange": "SMART",
+      "name": "Nano Dimension Ltd ADR"
+    },
+    "NVDA": {
+      "contract_id": 4815747,
+      "exchange": "SMART",
+      "name": "NVIDIA Corp"
+    },
+    "SCHB": {
+      "contract_id": 70083650,
+      "exchange": "SMART",
+      "name": "Schwab US Broad Market ETF"
+    },
+    "SDY": {
+      "contract_id": 45540807,
+      "exchange": "SMART",
+      "name": "SPDR S&P Dividend ETF"
+    },
+    "SPCX": {
+      "contract_id": 890493863,
+      "exchange": "SMART",
+      "name": "SPCX (used to price Space X shares)"
+    },
+    "SPHQ": {
+      "contract_id": 319359474,
+      "exchange": "SMART",
+      "name": "Invesco S&P 500 Quality ETF"
+    },
+    "TSLA": {
+      "contract_id": 76792991,
+      "exchange": "SMART",
+      "name": "Tesla Inc"
+    },
+    "VGK": {
+      "contract_id": 27684070,
+      "exchange": "SMART",
+      "name": "Vanguard FTSE Europe ETF"
+    },
+    "VNQ": {
+      "contract_id": 31230302,
+      "exchange": "SMART",
+      "name": "Vanguard Real Estate ETF"
+    },
+    "VTI": {
+      "contract_id": 12340041,
+      "exchange": "SMART",
+      "name": "Vanguard Total Stock Market ETF"
+    },
+    "VTV": {
+      "contract_id": 27638093,
+      "exchange": "SMART",
+      "name": "Vanguard Value ETF"
+    },
+    "VWO": {
+      "contract_id": 27684033,
+      "exchange": "SMART",
+      "name": "Vanguard FTSE Emerging Markets ETF"
+    },
+    "VYM": {
+      "contract_id": 41647036,
+      "exchange": "SMART",
+      "name": "Vanguard High Dividend Yield ETF"
+    },
+    "XLP": {
+      "contract_id": 4215210,
+      "exchange": "SMART",
+      "name": "Consumer Staples Select Sector SPDR"
+    },
+    "XLV": {
+      "contract_id": 4215205,
+      "exchange": "SMART",
+      "name": "Health Care Select Sector SPDR"
+    },
+    "XOVR": {
+      "contract_id": 725809824,
+      "exchange": "SMART",
+      "name": "ERShares Private-Public Crossover ETF"
+    }
+  },
+  "aliases": {
+    "I340336776": "FRANKLIN",
+    "IBCID340336776": "FRANKLIN"
+  }
+}

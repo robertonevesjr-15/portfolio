@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#111114">
+<meta name="format-detection" content="telephone=no">
+<title>Portfolio</title>
+<style>
+:root {
+  --bg: #111114;
+  --card: #232327;
+  --card-2: #1c1c1f;
+  --line: #333338;
+  --text: #f2f2f2;
+  --muted: #999;
+  --soft: #bbb;
+  --accent: #f0a030;
+  --up: #5fd38d;
+  --down: #ff7a7a;
+  --pad: max(16px, env(safe-area-inset-left));
+  --padr: max(16px, env(safe-area-inset-right));
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  padding: max(20px, env(safe-area-inset-top)) var(--padr) max(32px, env(safe-area-inset-bottom)) var(--pad);
+}
+.wrap { max-width: 760px; margin: 0 auto; }
+.kicker {
+  color: var(--accent);
+  letter-spacing: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+h1 { margin: 6px 0 4px; font-size: 28px; font-weight: 700; letter-spacing: -0.03em; }
+.updated { color: var(--muted); font-size: 14px; margin-bottom: 20px; line-height: 1.4; }
+.hero {
+  background: linear-gradient(180deg, #2a2418 0%, #232327 100%);
+  border: 1px solid #3a3224;
+  border-radius: 18px;
+  padding: 20px 20px 18px;
+  margin-bottom: 14px;
+}
+.hero .label {
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+}
+.hero .big {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 36px;
+  font-weight: 700;
+  margin: 8px 0 0;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.metric {
+  background: var(--card-2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+.metric .label {
+  font-size: 11px;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+.metric .val {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 20px;
+  font-weight: 700;
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+.metric .hint { color: var(--muted); font-size: 12px; margin-top: 4px; }
+.up { color: var(--up); }
+.down { color: var(--down); }
+.flat { color: var(--soft); }
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px 18px 8px;
+  margin-bottom: 16px;
+}
+.ct {
+  color: var(--accent);
+  letter-spacing: 1.5px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.bar {
+  width: 100%;
+  height: 16px;
+  display: block;
+  border-radius: 99px;
+  overflow: hidden;
+  background: #1a1a1d;
+}
+.legend {
+  list-style: none;
+  padding: 12px 0 8px;
+  margin: 0;
+}
+.legend li {
+  display: grid;
+  grid-template-columns: 12px 1fr auto auto;
+  gap: 8px 10px;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px solid #2c2c30;
+  font-size: 14px;
+}
+.legend li:last-child { border-bottom: 0; }
+.swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.leg-name { color: var(--soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.leg-val, .leg-pct {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+}
+.leg-pct { color: var(--muted); min-width: 3.4em; text-align: right; }
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.hint { color: var(--muted); font-size: 12px; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+th {
+  text-align: right;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 10px 0 10px 10px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+th.col-name, td.col-name { text-align: left; padding-left: 0; }
+th.sort-asc::after { content: " \25b2"; color: var(--accent); font-size: 9px; }
+th.sort-desc::after { content: " \25bc"; color: var(--accent); font-size: 9px; }
+td {
+  padding: 12px 0 12px 10px;
+  border-bottom: 1px solid #2c2c30;
+  text-align: right;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 13px;
+  vertical-align: top;
+}
+td.col-name { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; text-align: left; }
+.nm { font-size: 14px; font-weight: 600; line-height: 1.25; color: var(--text); }
+.sub { margin-top: 4px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.tk {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.4px;
+}
+.badge {
+  font-size: 10px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  border: 1px solid #3a3a40;
+  color: var(--soft);
+  border-radius: 999px;
+  padding: 2px 7px;
+  font-weight: 600;
+}
+.notes {
+  color: #888;
+  font-size: 13px;
+  line-height: 1.55;
+  padding-left: 18px;
+  margin: 0 0 8px;
+}
+.notes li { margin: 0 0 8px; }
+footer { color: #666; font-size: 12px; line-height: 1.5; margin-top: 8px; }
+@media (max-width: 560px) {
+  .hero .big { font-size: 30px; }
+  .metric .val { font-size: 18px; }
+  /* Keep the name visible; allow the numeric columns to scroll together. */
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -6px;
+    padding: 0 6px;
+  }
+  table { min-width: 560px; }
+  th, td { font-size: 12px; }
+  .nm { font-size: 13px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">Holdings</div>
+  <h1>Portfolio</h1>
+  <div class="updated">Last updated 25 Nov 2026, 1:32 PM (Abu Dhabi time)<br>Refreshed daily at 2:00 AM (Abu Dhabi time)</div>
+
+  <div class="hero">
+    <div class="label">Grand total</div>
+    <div class="big">$31,482.73</div>
+  </div>
+  <div class="grid">
+    <div class="metric">
+      <div class="label">Stocks &amp; funds</div>
+      <div class="val">$29,084.73</div>
+    </div>
+    <div class="metric">
+      <div class="label">Cash</div>
+      <div class="val">$2,398.00</div>
+    </div>
+    <div class="metric">
+      <div class="label">P&amp;L (known cost)</div>
+      <div class="val down">−$321.64</div>
+      <div class="hint">On $17,813.23 of cost basis</div>
+    </div>
+    <div class="metric">
+      <div class="label">Known-cost return</div>
+      <div class="val down">−1.8%</div>
+      <div class="hint">Other-broker lots have no cost</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">Allocation by broker</div>
+    <svg class="bar" viewBox="0 0 100 16" preserveAspectRatio="none" role="img" aria-label="Allocation bar"><rect x="0.000" y="0" width="60.873" height="16" fill="#f0a030"></rect><rect x="60.873" y="0" width="36.824" height="16" fill="#7aa2ff"></rect><rect x="97.697" y="0" width="1.976" height="16" fill="#5fd38d"></rect><rect x="99.673" y="0" width="0.327" height="16" fill="#5bc0be"></rect></svg>
+    <ul class='legend'><li><span class="swatch" style="background:#f0a030"></span><span class="leg-name">IBKR</span><span class="leg-val">$19,164.59</span><span class="leg-pct">60.9%</span></li><li><span class="swatch" style="background:#7aa2ff"></span><span class="leg-name">Other broker</span><span class="leg-val">$11,593.14</span><span class="leg-pct">36.8%</span></li><li><span class="swatch" style="background:#5fd38d"></span><span class="leg-name">ADCB</span><span class="leg-val">$622.00</span><span class="leg-pct">2.0%</span></li><li><span class="swatch" style="background:#5bc0be"></span><span class="leg-name">Kraken</span><span class="leg-val">$103.00</span><span class="leg-pct">0.3%</span></li></ul>
+  </div>
+
+  <div class="card">
+    <div class="ct">Allocation by holding</div>
+    <svg class="bar" viewBox="0 0 100 16" preserveAspectRatio="none" role="img" aria-label="Allocation bar"><rect x="0.000" y="0" width="32.658" height="16" fill="#f0a030"></rect><rect x="32.658" y="0" width="7.577" height="16" fill="#7aa2ff"></rect><rect x="40.236" y="0" width="7.345" height="16" fill="#5fd38d"></rect><rect x="47.581" y="0" width="7.080" height="16" fill="#e07a9a"></rect><rect x="54.661" y="0" width="4.098" height="16" fill="#c792ea"></rect><rect x="58.759" y="0" width="3.605" height="16" fill="#5bc0be"></rect><rect x="62.364" y="0" width="2.992" height="16" fill="#f6c177"></rect><rect x="65.356" y="0" width="2.855" height="16" fill="#89b4fa"></rect><rect x="68.210" y="0" width="2.833" height="16" fill="#a6e3a1"></rect><rect x="71.044" y="0" width="2.790" height="16" fill="#fab387"></rect><rect x="73.834" y="0" width="2.582" height="16" fill="#94e2d5"></rect><rect x="76.416" y="0" width="2.481" height="16" fill="#f38ba8"></rect><rect x="78.896" y="0" width="2.110" height="16" fill="#b4befe"></rect><rect x="81.007" y="0" width="1.976" height="16" fill="#cba6f7"></rect><rect x="82.982" y="0" width="1.882" height="16" fill="#89dceb"></rect><rect x="84.864" y="0" width="1.777" height="16" fill="#f0a030"></rect><rect x="86.642" y="0" width="1.505" height="16" fill="#7aa2ff"></rect><rect x="88.147" y="0" width="1.403" height="16" fill="#5fd38d"></rect><rect x="89.550" y="0" width="1.258" height="16" fill="#e07a9a"></rect><rect x="90.808" y="0" width="1.119" height="16" fill="#c792ea"></rect><rect x="91.926" y="0" width="1.111" height="16" fill="#5bc0be"></rect><rect x="93.037" y="0" width="1.026" height="16" fill="#f6c177"></rect><rect x="94.063" y="0" width="0.999" height="16" fill="#89b4fa"></rect><rect x="95.062" y="0" width="0.895" height="16" fill="#a6e3a1"></rect><rect x="95.957" y="0" width="0.879" height="16" fill="#fab387"></rect><rect x="96.836" y="0" width="0.779" height="16" fill="#94e2d5"></rect><rect x="97.615" y="0" width="0.700" height="16" fill="#f38ba8"></rect><rect x="98.315" y="0" width="0.699" height="16" fill="#b4befe"></rect><rect x="99.014" y="0" width="0.509" height="16" fill="#cba6f7"></rect><rect x="99.523" y="0" width="0.327" height="16" fill="#89dceb"></rect><rect x="99.850" y="0" width="0.095" height="16" fill="#f0a030"></rect><rect x="99.946" y="0" width="0.037" height="16" fill="#7aa2ff"></rect><rect x="99.983" y="0" width="0.017" height="16" fill="#5fd38d"></rect></svg>
+    <ul class='legend'><li><span class="swatch" style="background:#f0a030"></span><span class="leg-name">Franklin U.S. Dollar Short-Term Money Market A (USD) Inc</span><span class="leg-val">$10,281.72</span><span class="leg-pct">32.7%</span></li><li><span class="swatch" style="background:#7aa2ff"></span><span class="leg-name">Tesla Inc</span><span class="leg-val">$2,385.57</span><span class="leg-pct">7.6%</span></li><li><span class="swatch" style="background:#5fd38d"></span><span class="leg-name">Consumer Staples Select Sector SPDR</span><span class="leg-val">$2,312.50</span><span class="leg-pct">7.3%</span></li><li><span class="swatch" style="background:#e07a9a"></span><span class="leg-name">Health Care Select Sector SPDR</span><span class="leg-val">$2,229.00</span><span class="leg-pct">7.1%</span></li><li><span class="swatch" style="background:#c792ea"></span><span class="leg-name">Avantis US Small Cap Value ETF</span><span class="leg-val">$1,290.19</span><span class="leg-pct">4.1%</span></li><li><span class="swatch" style="background:#5bc0be"></span><span class="leg-name">Space X (priced as SPCX)</span><span class="leg-val">$1,134.83</span><span class="leg-pct">3.6%</span></li><li><span class="swatch" style="background:#f6c177"></span><span class="leg-name">Vanguard FTSE Europe ETF</span><span class="leg-val">$941.91</span><span class="leg-pct">3.0%</span></li><li><span class="swatch" style="background:#89b4fa"></span><span class="leg-name">Vanguard FTSE Emerging Markets ETF</span><span class="leg-val">$898.79</span><span class="leg-pct">2.9%</span></li><li><span class="swatch" style="background:#a6e3a1"></span><span class="leg-name">IBKR USA (cash)</span><span class="leg-val">$892.00</span><span class="leg-pct">2.8%</span></li><li><span class="swatch" style="background:#fab387"></span><span class="leg-name">Avantis International Small Cap Value ETF</span><span class="leg-val">$878.40</span><span class="leg-pct">2.8%</span></li><li><span class="swatch" style="background:#94e2d5"></span><span class="leg-name">Invesco S&amp;P 500 Quality ETF</span><span class="leg-val">$812.84</span><span class="leg-pct">2.6%</span></li><li><span class="swatch" style="background:#f38ba8"></span><span class="leg-name">IBKR HSBC (cash)</span><span class="leg-val">$781.00</span><span class="leg-pct">2.5%</span></li><li><span class="swatch" style="background:#b4befe"></span><span class="leg-name">iShares Gold Trust</span><span class="leg-val">$664.39</span><span class="leg-pct">2.1%</span></li><li><span class="swatch" style="background:#cba6f7"></span><span class="leg-name">ADCB USD (cash)</span><span class="leg-val">$622.00</span><span class="leg-pct">2.0%</span></li><li><span class="swatch" style="background:#89dceb"></span><span class="leg-name">Micron Technology Inc</span><span class="leg-val">$592.50</span><span class="leg-pct">1.9%</span></li><li><span class="swatch" style="background:#f0a030"></span><span class="leg-name">ERShares Private-Public Crossover ETF</span><span class="leg-val">$559.50</span><span class="leg-pct">1.8%</span></li><li><span class="swatch" style="background:#7aa2ff"></span><span class="leg-name">Vanguard Real Estate ETF</span><span class="leg-val">$473.90</span><span class="leg-pct">1.5%</span></li><li><span class="swatch" style="background:#5fd38d"></span><span class="leg-name">NVIDIA Corp</span><span class="leg-val">$441.60</span><span class="leg-pct">1.4%</span></li><li><span class="swatch" style="background:#e07a9a"></span><span class="leg-name">iShares Core Dividend Growth ETF</span><span class="leg-val">$396.05</span><span class="leg-pct">1.3%</span></li><li><span class="swatch" style="background:#c792ea"></span><span class="leg-name">Apple Inc</span><span class="leg-val">$352.20</span><span class="leg-pct">1.1%</span></li><li><span class="swatch" style="background:#5bc0be"></span><span class="leg-name">Vanguard Total Stock Market ETF</span><span class="leg-val">$349.71</span><span class="leg-pct">1.1%</span></li><li><span class="swatch" style="background:#f6c177"></span><span class="leg-name">SPDR S&amp;P Dividend ETF</span><span class="leg-val">$322.94</span><span class="leg-pct">1.0%</span></li><li><span class="swatch" style="background:#89b4fa"></span><span class="leg-name">Vanguard High Dividend Yield ETF</span><span class="leg-val">$314.64</span><span class="leg-pct">1.0%</span></li><li><span class="swatch" style="background:#a6e3a1"></span><span class="leg-name">Global X Copper Miners ETF</span><span class="leg-val">$281.80</span><span class="leg-pct">0.9%</span></li><li><span class="swatch" style="background:#fab387"></span><span class="leg-name">Schwab US Broad Market ETF</span><span class="leg-val">$276.60</span><span class="leg-pct">0.9%</span></li><li><span class="swatch" style="background:#94e2d5"></span><span class="leg-name">Amazon.com Inc</span><span class="leg-val">$245.27</span><span class="leg-pct">0.8%</span></li><li><span class="swatch" style="background:#f38ba8"></span><span class="leg-name">iShares Global Energy ETF</span><span class="leg-val">$220.40</span><span class="leg-pct">0.7%</span></li><li><span class="swatch" style="background:#b4befe"></span><span class="leg-name">Vanguard Value ETF</span><span class="leg-val">$220.10</span><span class="leg-pct">0.7%</span></li><li><span class="swatch" style="background:#cba6f7"></span><span class="leg-name">CoreWeave Inc Class A</span><span class="leg-val">$160.24</span><span class="leg-pct">0.5%</span></li><li><span class="swatch" style="background:#89dceb"></span><span class="leg-name">Kraken (cash)</span><span class="leg-val">$103.00</span><span class="leg-pct">0.3%</span></li><li><span class="swatch" style="background:#f0a030"></span><span class="leg-name">YieldMax MSTR Option Income Strategy ETF</span><span class="leg-val">$30.00</span><span class="leg-pct">0.1%</span></li><li><span class="swatch" style="background:#7aa2ff"></span><span class="leg-name">Nano Dimension Ltd ADR</span><span class="leg-val">$11.80</span><span class="leg-pct">0.0%</span></li><li><span class="swatch" style="background:#5fd38d"></span><span class="leg-name">MMTec Inc</span><span class="leg-val">$5.34</span><span class="leg-pct">0.0%</span></li></ul>
+  </div>
+
+  <div class="card">
+    <div class="toolbar">
+      <div class="ct" style="margin:0">Holdings</div>
+      <div class="hint">Tap a column to sort</div>
+    </div>
+    <div class="table-scroll">
+      <table id="holdings">
+        <thead>
+          <tr>
+            <th class="col-name" data-sort="name">Name</th>
+            <th data-sort="shares">Shares</th>
+            <th data-sort="price">Price</th>
+            <th data-sort="value" class="sort-desc">Value</th>
+            <th data-sort="weight">Weight</th>
+            <th data-sort="pnl">P&amp;L</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-name="avantis international small cap value etf" data-ticker="avdv" data-shares="9.0" data-price="97.6" data-value="878.4" data-weight="2.7901011125782293" data-pnl="-129.41" data-broker="IBKR"><td class='col-name'><div class='nm'>Avantis International Small Cap Value ETF</div><div class='sub'><span class='tk'>AVDV</span><span class='badge'>IBKR</span></div></td><td class='num' data-label='Shares'>9</td><td class='num' data-label='Price' title='IBKR last (session close)'>$97.60</td><td class='num' data-label='Value'>$878.40</td><td class='num' data-label='Weight'>2.8%</td><td class='num down' data-label='P&amp;L'>−$129.41</td></tr><tr data-name="avantis us small cap value etf" data-ticker="avuv" data-shares="11.0" data-price="117.29" data-value="1290.19" data-weight="4.098088062884001" data-pnl="-87.83" data-broker="IBKR"><td class='col-name'><div class='nm'>Avantis US Small Cap Value ETF</div><div class='sub'><span class='tk'>AVUV</span><span class='badge'>IBKR</span></div></td><td class='num' data-label='Shares'>11</td><td class='num' data-label='Price' title='IBKR last (session close)'>$117.29</td><td class='num' data-label='Value'>$1,290.19</td><td class='num' data-label='Weight'>4.1%</td><td class='num down' data-label='P&amp;L'>−$87.83</td></tr><tr data-name="global x copper miners etf" data-ticker="copx" data-shares="5.0" data-price="56.36" data-value="281.8" data-weight="0.8950939133931524" data-pnl="-127.95" data-broker="IBKR"><td class='col-name'><div class='nm'>Global X Copper Miners ETF</div><div class='sub'><span class='tk'>COPX</span><span class='badge'>IBKR</span></div></td><td class='num' data-label='Shares'>5</td><td class='num' data-label='Price' title='IBKR last · 25 Nov 2026, 12:21 PM (Abu Dhabi time)'>$56.36</td><td class='num' data-label='Value'>$281.80</td><td class='num' data-label='Weight'>0.9%</td><td class='num down' data-label='P&amp;L'>−$127.95</td></tr><tr data-name="coreweave inc class a" data-ticker="crwv" data-shares="4.0" data-price="40.06" data-value="160.24" data-weight="0.508977461611493" data-pnl="-198.4" data-broker="IBKR"><td class='col-name'><div class='nm'>CoreWeave Inc Class A</div><div class='sub'><span class='tk'>CRWV</span><span class='badge'>IBKR</span></div></td><td class='num' data-label='Shares'>4</td><td class='num' data-label='Price' title='IBKR last · 25 Nov 2026, 1:29 PM (Abu Dhabi time)'>$40.06</td><td class='num' data-label='Value'>$160.24</td><td class='num' data-label='Weight'>0.5%</td><td class='num down' data-label='P&amp;L'>−$198.40</td></tr><tr data-name="franklin u.s. dollar short-term money market a (usd) inc" data-ticker="franklin" data-shares="1047.018" data-price="9.82" data-value="10281.72" data-weight="32.65828598726984" data-pnl="281.72" data-broker="IBKR"><td class='col-name'><div class='nm'>Franklin U.S. Dollar Short-Term Money Market A (USD) Inc</div><div class='sub'><span class='tk'>FRANKLIN</span><span class='badge'>IBKR</span></div></td><td class='num' data-label='Shares'>1047.018</td><td class='num' data-label='Price' title='IBKR last (session close) · True cost basis is $10,000 (not the cost IBKR displays). Units are the live IBKR position.'>$9.82</td><td class='num' data-label='Value'>$10,281.72</td><td class='num' data-label='Weight'>32.7%</td><td class='num up' data-label='P&amp;L'>+$281.72</td></tr><tr data-name="yieldmax mstr option income strategy etf" data-ticker="msty" data-shares="4.0" data-price="7.5" data-value="30.0" data-weight="0.09529033854433844" data-pnl="-219.11" data-broker="IBKR"><td class='col-name'><div class='nm'>YieldMax MSTR Option Income Strategy ETF</div><div class='sub'><span class='tk'>MSTY</span><span class='badge'>IBKR</span></div></td><td class='num' data-label='Shares'>4</td><td class='num' data-label='Price' title='IBKR last · 25 Nov 2026, 1:29 PM (Abu Dhabi time)'>$7.50</td><td class='num' data-label='Value'>$30.00</td><td class='num' data-label='Weight'>0.1%</td><td class='num down' data-label='P&amp;L'>−$219.11</td></tr><tr data-name="mmtec inc" data-ticker="mtc" data-shares="1.0" data-price="5.34" data-value="5.34" data-weight="0.01696168026089224" data-pnl="-245.83" data-broker="IBKR"><td class='col-name'><div class='nm'>MMTec Inc</div><div class='sub'><span class='tk'>MTC</span><span class='badge'>IBKR</span></div></td><td class='num' data-label='Shares'>1</td><td class='num' data-label='Price' title='IBKR last (session close)'>$5.34</td><td class='num' data-label='Value'>$5.34</td><td class='num' data-label='Weight'>0.0%</td><td class='num down' data-label='P&amp;L'>−$245.83</td></tr><tr data-name="micron technology inc" data-ticker="mu" data-shares="1.0" data-price="592.5" data-value="592.5" data-weight="1.881984186250684" data-pnl="-387.29" data-broker="IBKR"><td class='col-name'><div class='nm'>Micron Technology Inc</div><div class='sub'><span class='tk'>MU</span><span class='badge'>IBKR</span></div></td><td class='num' data-label='Shares'>1</td><td class='num' data-label='Price' title='IBKR last · 25 Nov 2026, 1:29 PM (Abu Dhabi time)'>$592.50</td><td class='num' data-label='Value'>$592.50</td><td class='num' data-label='Weight'>1.9%</td><td class='num down' data-label='P&amp;L'>−$387.29</td></tr><tr data-name="nano dimension ltd adr" data-ticker="nndm" data-shares="10.0" data-price="1.18" data-value="11.8" data-weight="0.03748086649410645" data-pnl="-150.7" data-broker="IBKR"><td class='col-name'><div class='nm'>Nano Dimension Ltd ADR</div><div class='sub'><span class='tk'>NNDM</span><span class='badge'>IBKR</span></div></td><td class='num' data-label='Shares'>10</td><td class='num' data-label='Price' title='IBKR last (session close)'>$1.18</td><td class='num' data-label='Value'>$11.80</td><td class='num' data-label='Weight'>0.0%</td><td class='num down' data-label='P&amp;L'>−$150.70</td></tr><tr data-name="nvidia corp" data-ticker="nvda" data-shares="3.0" data-price="147.2" data-value="441.6" data-weight="1.402673783372662" data-pnl="-128.05" data-broker="IBKR"><td class='col-name'><div class='nm'>NVIDIA Corp</div><div class='sub'><span class='tk'>NVDA</span><span class='badge'>IBKR</span></div></td><td class='num' data-label='Shares'>3</td><td class='num' data-label='Price' title='IBKR last · 25 Nov 2026, 1:29 PM (Abu Dhabi time)'>$147.20</td><td class='num' data-label='Value'>$441.60</td><td class='num' data-label='Weight'>1.4%</td><td class='num down' data-label='P&amp;L'>−$128.05</td></tr><tr data-name="space x (priced as spcx)" data-ticker="spcx" data-shares="5.0" data-price="122.42" data-value="612.1" data-weight="1.9442405407663188" data-pnl="-98.15" data-broker="IBKR"><td class='col-name'><div class='nm'>Space X (priced as SPCX)</div><div class='sub'><span class='tk'>SPCX</span><span class='badge'>IBKR</span></div></td><td class='num' data-label='Shares'>5</td><td class='num' data-label='Price' title='IBKR last · 25 Nov 2026, 1:29 PM (Abu Dhabi time) · ASSUMPTION: priced as SPCX. This is not SpaceX private stock.'>$122.42</td><td class='num' data-label='Value'>$612.10</td><td class='num' data-label='Weight'>1.9%</td><td class='num down' data-label='P&amp;L'>−$98.15</td></tr><tr data-name="tesla inc" data-ticker="tsla" data-shares="5.0" data-price="374.5" data-value="1872.5" data-weight="5.947705297475791" data-pnl="1161.5" data-broker="IBKR"><td class='col-name'><div class='nm'>Tesla Inc</div><div class='sub'><span class='tk'>TSLA</span><span class='badge'>IBKR</span></div></td><td class='num' data-label='Shares'>5</td><td class='num' data-label='Price' title='IBKR last · 25 Nov 2026, 1:28 PM (Abu Dhabi time)'>$374.50</td><td class='num' data-label='Value'>$1,872.50</td><td class='num' data-label='Weight'>5.9%</td><td class='num up' data-label='P&amp;L'>+$1,161.50</td></tr><tr data-name="vanguard real estate etf" data-ticker="vnq" data-shares="5.0" data-price="94.78" data-value="473.9" data-weight="1.5052697145387328" data-pnl="43.96" data-broker="IBKR"><td class='col-name'><div class='nm'>Vanguard Real Estate ETF</div><div class='sub'><span class='tk'>VNQ</span><span class='badge'>IBKR</span></div></td><td class='num' data-label='Shares'>5</td><td class='num' data-label='Price' title='IBKR last (session close)'>$94.78</td><td class='num' data-label='Value'>$473.90</td><td class='num' data-label='Weight'>1.5%</td><td class='num up' data-label='P&amp;L'>+$43.96</td></tr><tr data-name="ershares private-public crossover etf" data-ticker="xovr" data-shares="30.0" data-price="18.65" data-value="559.5" data-weight="1.7771648138519118" data-pnl="-36.1" data-broker="IBKR"><td class='col-name'><div class='nm'>ERShares Private-Public Crossover ETF</div><div class='sub'><span class='tk'>XOVR</span><span class='badge'>IBKR</span></div></td><td class='num' data-label='Shares'>30</td><td class='num' data-label='Price' title='IBKR last (session close)'>$18.65</td><td class='num' data-label='Value'>$559.50</td><td class='num' data-label='Weight'>1.8%</td><td class='num down' data-label='P&amp;L'>−$36.10</td></tr><tr data-name="apple inc" data-ticker="aapl" data-shares="1.0" data-price="352.2" data-value="352.2" data-weight="1.1187085745105332" data-pnl="" data-broker="Other broker"><td class='col-name'><div class='nm'>Apple Inc</div><div class='sub'><span class='tk'>AAPL</span><span class='badge'>Other broker</span></div></td><td class='num' data-label='Shares'>1</td><td class='num' data-label='Price' title='IBKR last · 25 Nov 2026, 1:29 PM (Abu Dhabi time) · Held at another broker; cost basis is not known.'>$352.20</td><td class='num' data-label='Value'>$352.20</td><td class='num' data-label='Weight'>1.1%</td><td class='num flat' data-label='P&amp;L'>—</td></tr><tr data-name="amazon.com inc" data-ticker="amzn" data-shares="1.0" data-price="245.27" data-value="245.27" data-weight="0.7790620444923296" data-pnl="" data-broker="Other broker"><td class='col-name'><div class='nm'>Amazon.com Inc</div><div class='sub'><span class='tk'>AMZN</span><span class='badge'>Other broker</span></div></td><td class='num' data-label='Shares'>1</td><td class='num' data-label='Price' title='IBKR last · 25 Nov 2026, 1:26 PM (Abu Dhabi time) · Held at another broker; cost basis is not known.'>$245.27</td><td class='num' data-label='Value'>$245.27</td><td class='num' data-label='Weight'>0.8%</td><td class='num flat' data-label='P&amp;L'>—</td></tr><tr data-name="ishares core dividend growth etf" data-ticker="dgro" data-shares="5.0" data-price="79.21" data-value="396.05" data-weight="1.2579912860161746" data-pnl="" data-broker="Other broker"><td class='col-name'><div class='nm'>iShares Core Dividend Growth ETF</div><div class='sub'><span class='tk'>DGRO</span><span class='badge'>Other broker</span></div></td><td class='num' data-label='Shares'>5</td><td class='num' data-label='Price' title='IBKR last (session close) · Held at another broker; cost basis is not known.'>$79.21</td><td class='num' data-label='Value'>$396.05</td><td class='num' data-label='Weight'>1.3%</td><td class='num flat' data-label='P&amp;L'>—</td></tr><tr data-name="ishares gold trust" data-ticker="iau" data-shares="10.03" data-price="66.24" data-value="664.39" data-weight="2.1103316008491" data-pnl="" data-broker="Other broker"><td class='col-name'><div class='nm'>iShares Gold Trust</div><div class='sub'><span class='tk'>IAU</span><span class='badge'>Other broker</span></div></td><td class='num' data-label='Shares'>10.03</td><td class='num' data-label='Price' title='IBKR last · 25 Nov 2026, 1:28 PM (Abu Dhabi time) · Held at another broker; cost basis is not known.'>$66.24</td><td class='num' data-label='Value'>$664.39</td><td class='num' data-label='Weight'>2.1%</td><td class='num flat' data-label='P&amp;L'>—</td></tr><tr data-name="ishares global energy etf" data-ticker="ixc" data-shares="4.0" data-price="55.1" data-value="220.4" data-weight="0.700066353839073" data-pnl="" data-broker="Other broker"><td class='col-name'><div class='nm'>iShares Global Energy ETF</div><div class='sub'><span class='tk'>IXC</span><span class='badge'>Other broker</span></div></td><td class='num' data-label='Shares'>4</td><td class='num' data-label='Price' title='IBKR last (session close) · Held at another broker; cost basis is not known.'>$55.10</td><td class='num' data-label='Value'>$220.40</td><td class='num' data-label='Weight'>0.7%</td><td class='num flat' data-label='P&amp;L'>—</td></tr><tr data-name="schwab us broad market etf" data-ticker="schb" data-shares="10.0" data-price="27.66" data-value="276.6" data-weight="0.8785769213788005" data-pnl="" data-broker="Other broker"><td class='col-name'><div class='nm'>Schwab US Broad Market ETF</div><div class='sub'><span class='tk'>SCHB</span><span class='badge'>Other broker</span></div></td><td class='num' data-label='Shares'>10</td><td class='num' data-label='Price' title='IBKR last (session close) · Held at another broker; cost basis is not known.'>$27.66</td><td class='num' data-label='Value'>$276.60</td><td class='num' data-label='Weight'>0.9%</td><td class='num flat' data-label='P&amp;L'>—</td></tr><tr data-name="spdr s&amp;p dividend etf" data-ticker="sdy" data-shares="2.0" data-price="161.47" data-value="322.94" data-weight="1.0257687309836219" data-pnl="" data-broker="Other broker"><td class='col-name'><div class='nm'>SPDR S&amp;P Dividend ETF</div><div class='sub'><span class='tk'>SDY</span><span class='badge'>Other broker</span></div></td><td class='num' data-label='Shares'>2</td><td class='num' data-label='Price' title='IBKR last (session close) · Held at another broker; cost basis is not known.'>$161.47</td><td class='num' data-label='Value'>$322.94</td><td class='num' data-label='Weight'>1.0%</td><td class='num flat' data-label='P&amp;L'>—</td></tr><tr data-name="space x (priced as spcx)" data-ticker="spcx" data-shares="4.27" data-price="122.42" data-value="522.73" data-weight="1.6603706222427344" data-pnl="" data-broker="Other broker"><td class='col-name'><div class='nm'>Space X (priced as SPCX)</div><div class='sub'><span class='tk'>SPCX</span><span class='badge'>Other broker</span></div></td><td class='num' data-label='Shares'>4.27</td><td class='num' data-label='Price' title='IBKR last · 25 Nov 2026, 1:29 PM (Abu Dhabi time) · ASSUMPTION: all Space X shares, including these at another broker, are priced as SPCX. This is not SpaceX private stock. Cost basis is not known.'>$122.42</td><td class='num' data-label='Value'>$522.73</td><td class='num' data-label='Weight'>1.7%</td><td class='num flat' data-label='P&amp;L'>—</td></tr><tr data-name="invesco s&amp;p 500 quality etf" data-ticker="sphq" data-shares="10.12" data-price="80.32" data-value="812.84" data-weight="2.5818599594126685" data-pnl="" data-broker="Other broker"><td class='col-name'><div class='nm'>Invesco S&amp;P 500 Quality ETF</div><div class='sub'><span class='tk'>SPHQ</span><span class='badge'>Other broker</span></div></td><td class='num' data-label='Shares'>10.12</td><td class='num' data-label='Price' title='IBKR last (session close) · Held at another broker; cost basis is not known. Mark (plprice) was $78.72 vs last $80.32.'>$80.32</td><td class='num' data-label='Value'>$812.84</td><td class='num' data-label='Weight'>2.6%</td><td class='num flat' data-label='P&amp;L'>—</td></tr><tr data-name="tesla inc" data-ticker="tsla" data-shares="1.37" data-price="374.5" data-value="513.07" data-weight="1.6296871332314575" data-pnl="" data-broker="Other broker"><td class='col-name'><div class='nm'>Tesla Inc</div><div class='sub'><span class='tk'>TSLA</span><span class='badge'>Other broker</span></div></td><td class='num' data-label='Shares'>1.37</td><td class='num' data-label='Price' title='IBKR last · 25 Nov 2026, 1:28 PM (Abu Dhabi time) · Held at another broker; cost basis is not known.'>$374.50</td><td class='num' data-label='Value'>$513.07</td><td class='num' data-label='Weight'>1.6%</td><td class='num flat' data-label='P&amp;L'>—</td></tr><tr data-name="vanguard ftse europe etf" data-ticker="vgk" data-shares="11.11" data-price="84.78" data-value="941.91" data-weight="2.991830759276594" data-pnl="" data-broker="Other broker"><td class='col-name'><div class='nm'>Vanguard FTSE Europe ETF</div><div class='sub'><span class='tk'>VGK</span><span class='badge'>Other broker</span></div></td><td class='num' data-label='Shares'>11.11</td><td class='num' data-label='Price' title='IBKR last (session close) · Held at another broker; cost basis is not known.'>$84.78</td><td class='num' data-label='Value'>$941.91</td><td class='num' data-label='Weight'>3.0%</td><td class='num flat' data-label='P&amp;L'>—</td></tr><tr data-name="vanguard total stock market etf" data-ticker="vti" data-shares="1.0" data-price="349.71" data-value="349.71" data-weight="1.1107994764113531" data-pnl="" data-broker="Other broker"><td class='col-name'><div class='nm'>Vanguard Total Stock Market ETF</div><div class='sub'><span class='tk'>VTI</span><span class='badge'>Other broker</span></div></td><td class='num' data-label='Shares'>1</td><td class='num' data-label='Price' title='IBKR last · 25 Nov 2026, 1:29 PM (Abu Dhabi time) · Held at another broker; cost basis is not known.'>$349.71</td><td class='num' data-label='Value'>$349.71</td><td class='num' data-label='Weight'>1.1%</td><td class='num flat' data-label='P&amp;L'>—</td></tr><tr data-name="vanguard value etf" data-ticker="vtv" data-shares="1.0" data-price="220.1" data-value="220.1" data-weight="0.6991134504536297" data-pnl="" data-broker="Other broker"><td class='col-name'><div class='nm'>Vanguard Value ETF</div><div class='sub'><span class='tk'>VTV</span><span class='badge'>Other broker</span></div></td><td class='num' data-label='Shares'>1</td><td class='num' data-label='Price' title='IBKR last (session close) · Held at another broker; cost basis is not known.'>$220.10</td><td class='num' data-label='Value'>$220.10</td><td class='num' data-label='Weight'>0.7%</td><td class='num flat' data-label='P&amp;L'>—</td></tr><tr data-name="vanguard ftse emerging markets etf" data-ticker="vwo" data-shares="17.0" data-price="52.87" data-value="898.79" data-weight="2.8548667793421982" data-pnl="" data-broker="Other broker"><td class='col-name'><div class='nm'>Vanguard FTSE Emerging Markets ETF</div><div class='sub'><span class='tk'>VWO</span><span class='badge'>Other broker</span></div></td><td class='num' data-label='Shares'>17</td><td class='num' data-label='Price' title='IBKR last (session close) · Held at another broker; cost basis is not known.'>$52.87</td><td class='num' data-label='Value'>$898.79</td><td class='num' data-label='Weight'>2.9%</td><td class='num flat' data-label='P&amp;L'>—</td></tr><tr data-name="vanguard high dividend yield etf" data-ticker="vym" data-shares="2.0" data-price="157.32" data-value="314.64" data-weight="0.9994050706530215" data-pnl="" data-broker="Other broker"><td class='col-name'><div class='nm'>Vanguard High Dividend Yield ETF</div><div class='sub'><span class='tk'>VYM</span><span class='badge'>Other broker</span></div></td><td class='num' data-label='Shares'>2</td><td class='num' data-label='Price' title='IBKR last (session close) · Held at another broker; cost basis is not known.'>$157.32</td><td class='num' data-label='Value'>$314.64</td><td class='num' data-label='Weight'>1.0%</td><td class='num flat' data-label='P&amp;L'>—</td></tr><tr data-name="consumer staples select sector spdr" data-ticker="xlp" data-shares="25.0" data-price="92.5" data-value="2312.5" data-weight="7.345296929459422" data-pnl="" data-broker="Other broker"><td class='col-name'><div class='nm'>Consumer Staples Select Sector SPDR</div><div class='sub'><span class='tk'>XLP</span><span class='badge'>Other broker</span></div></td><td class='num' data-label='Shares'>25</td><td class='num' data-label='Price' title='IBKR last · 25 Nov 2026, 1:25 PM (Abu Dhabi time) · Held at another broker; cost basis is not known.'>$92.50</td><td class='num' data-label='Value'>$2,312.50</td><td class='num' data-label='Weight'>7.3%</td><td class='num flat' data-label='P&amp;L'>—</td></tr><tr data-name="health care select sector spdr" data-ticker="xlv" data-shares="12.0" data-price="185.75" data-value="2229.0" data-weight="7.080072153844346" data-pnl="" data-broker="Other broker"><td class='col-name'><div class='nm'>Health Care Select Sector SPDR</div><div class='sub'><span class='tk'>XLV</span><span class='badge'>Other broker</span></div></td><td class='num' data-label='Shares'>12</td><td class='num' data-label='Price' title='IBKR last · 25 Nov 2026, 12:15 PM (Abu Dhabi time) · Held at another broker; cost basis is not known.'>$185.75</td><td class='num' data-label='Value'>$2,229.00</td><td class='num' data-label='Weight'>7.1%</td><td class='num flat' data-label='P&amp;L'>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">Cash at brokers</div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th class="col-name">Account</th>
+            <th>Amount</th>
+            <th>Weight</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class='col-name'><div class='nm'>ADCB USD</div><div class='sub'><span class='badge'>ADCB</span></div></td><td class='num' data-label='Amount'>$622.00</td><td class='num' data-label='Weight'>2.0%</td></tr><tr><td class='col-name'><div class='nm'>IBKR HSBC</div><div class='sub'><span class='badge'>IBKR HSBC</span></div></td><td class='num' data-label='Amount'>$781.00</td><td class='num' data-label='Weight'>2.5%</td></tr><tr><td class='col-name'><div class='nm'>IBKR USA</div><div class='sub'><span class='badge'>IBKR USA</span></div></td><td class='num' data-label='Amount'>$892.00</td><td class='num' data-label='Weight'>2.8%</td></tr><tr><td class='col-name'><div class='nm'>Kraken</div><div class='sub'><span class='badge'>Kraken</span></div></td><td class='num' data-label='Amount'>$103.00</td><td class='num' data-label='Weight'>0.3%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">Notes</div>
+    <ul class='notes'><li>Space X shares (9.27 total) are all priced using SPCX. This is an assumption; it is not SpaceX private stock. 5 shares are at IBKR and 4.27 are at another broker.</li><li>Franklin money market fund uses the live IBKR unit count and a true cost basis of $10,000.</li><li>Cash balances come from the master list and are not repriced daily.</li><li>Holdings not at IBKR are labeled Other broker. Their cost basis is not known, so they have no P&amp;L.</li><li>P&amp;L is shown only where cost is known (IBKR lots, including the Franklin fund at $10,000).</li><li>This page is public. Anyone with the link can see these holdings.</li></ul>
+  </div>
+  <footer>Figures are in US dollars. Prices come from Interactive Brokers snapshots (last trade when available, otherwise the mark). This page is a personal snapshot and is not advice.</footer>
+</div>
+<script>
+(function () {
+  const table = document.getElementById("holdings");
+  if (!table) return;
+  const tbody = table.tBodies[0];
+  const heads = table.tHead.rows[0].cells;
+  let current = "value";
+  let dir = "desc";
+
+  function val(row, key) {
+    if (key === "name") return row.getAttribute("data-name") || "";
+    const raw = row.getAttribute("data-" + key);
+    if (raw === "" || raw === null) return key === "pnl" ? -Infinity : 0;
+    const n = Number(raw);
+    return Number.isNaN(n) ? raw : n;
+  }
+
+  function sortBy(key, nextDir) {
+    current = key;
+    dir = nextDir;
+    const rows = Array.from(tbody.rows);
+    rows.sort(function (a, b) {
+      const av = val(a, key);
+      const bv = val(b, key);
+      if (typeof av === "string" || typeof bv === "string") {
+        const cmp = String(av).localeCompare(String(bv));
+        return dir === "asc" ? cmp : -cmp;
+      }
+      if (av === bv) return val(b, "value") - val(a, "value");
+      return dir === "asc" ? av - bv : bv - av;
+    });
+    rows.forEach(function (row) { tbody.appendChild(row); });
+    Array.from(heads).forEach(function (th) {
+      th.classList.remove("sort-asc", "sort-desc");
+      if (th.getAttribute("data-sort") === key) th.classList.add("sort-" + dir);
+    });
+  }
+
+  Array.from(heads).forEach(function (th) {
+    th.addEventListener("click", function () {
+      const key = th.getAttribute("data-sort");
+      if (!key) return;
+      const next = (current === key && dir === "desc") ? "asc" : "desc";
+      sortBy(key, next);
+    });
+  });
+
+  sortBy("value", "desc");
+})();
+</script>
+</body>
+</html>
