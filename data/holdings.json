@@ -3,7 +3,7 @@
     "currency": "USD",
     "timezone": "Asia/Dubai",
     "timezone_label": "Abu Dhabi time",
-    "updated_at": "2026-11-26T01:53:53+04:00",
+    "updated_at": "2026-11-26T01:57:18+04:00",
     "notes": [
       "Space X shares (9.27 total) are all priced using SPCX. This is an assumption; it is not SpaceX private stock. 5 shares are at IBKR and 4.27 are at another broker.",
       "Franklin money market fund uses the live IBKR unit count and a true cost basis of $10,000.",
@@ -457,7 +457,7 @@
       "price_ts": "2026-11-26T00:59:50+04:00",
       "contract_id": 319359474,
       "exchange": "SMART",
-      "notes": "Held at another broker; cost basis is not known. 72 vs last $80. 32."
+      "notes": "Held at another broker; cost basis is not known."
     },
     {
       "id": "TSLA-Otherbroker",

@@ -23,6 +23,7 @@ Rules:
 from __future__ import annotations
 
 import json
+import re
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -169,8 +170,10 @@ def apply_price(holding: dict, quote: dict | None, unpriced: list) -> None:
     mark = mark_price(quote)
     notes = holding.get("notes") or ""
     # Drop a previous mark-gap sentence, then re-add if the gap is still large.
-    parts = [p.strip() for p in notes.split(".") if p.strip() and not p.strip().startswith("Mark (plprice) was")]
-    notes = ". ".join(parts)
+    # Do not split on "." — prices contain decimal points and that leaves remnants.
+    notes = re.sub(r"\s*Mark \(plprice\) was \$[0-9.,]+ vs last \$[0-9.,]+\.?", "", notes)
+    notes = re.sub(r"\s*\d+ vs last \$[0-9.,]+\.\s*\d+\.?", "", notes)
+    notes = notes.strip()
     if notes and not notes.endswith("."):
         notes += "."
     if mark is not None and price and abs(price - mark) / price >= 0.015:
